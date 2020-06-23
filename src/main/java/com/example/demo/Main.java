@@ -1,14 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.entity.Course;
-import com.example.demo.entity.Instructor;
-import com.example.demo.entity.InstructorDetail;
-import com.example.demo.entity.Review;
+import com.example.demo.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class DemoApplication {
+public class Main {
 
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
@@ -17,15 +14,36 @@ public class DemoApplication {
 				.addAnnotatedClass(InstructorDetail.class)
 				.addAnnotatedClass(Course.class)
 				.addAnnotatedClass(Review.class)
+				.addAnnotatedClass(Student.class)
 				.buildSessionFactory();
 
 		Session session = factory.getCurrentSession();
 		try{
 			session.beginTransaction();
+			Student student = new Student("Killer", "Kol", "kill@gmail.com");
+			System.out.println("Student: " + student);
+			System.out.println("Course: " + student.getCourses());
+			Course course1 = new Course("python");
+			Course course2 = new Course("java");
+			course1.addStudent(student);
+			course2.addStudent(student);
+
+			session.save(student);
+			session.save(course1);
+			session.save(course2);
+
 //			Course course = session.get(Course.class, 3);
-			Course course = session.get(Course.class, 5);
-			System.out.println("Delete the course");
-			session.delete(course);
+//			Course course = new Course("Pacman learning to code");
+//			System.out.println("Save Course");
+//			session.save(course);
+//			Student student1 = new Student("Julia", "Path", "julia@gmail.com");
+//			Student student2 = new Student("Jack", "Bal", "jack@gmail.com");
+//			course.addStudent(student1);
+//			course.addStudent(student2);
+//			System.out.println("Save Students");
+//			session.save(student1);
+//			session.save(student2);
+//			System.out.println("Saved Students" + course.getStudents());
 
 //			System.out.println("Course :"+course);
 //			System.out.println("Review: "+ course.getReviews());
